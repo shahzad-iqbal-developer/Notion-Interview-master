@@ -14,7 +14,7 @@ relations={}
   ngOnInit(): void {
     let detailViewURL = sessionStorage.getItem('detailURL')||"";
     this.service.getAgenciesDetail(detailViewURL).subscribe((agencyDetails:AgencyDetails)=>{
-      debugger;
+
       this.relations= agencyDetails.data.relationships;
       //console.log(data);
 

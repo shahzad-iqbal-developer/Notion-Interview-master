@@ -60,10 +60,10 @@ export class BasicTableComponent implements OnInit {
 
     )
     .subscribe((data:AgencyTable[])=>{
-      debugger;
+
       this.paginator.pageSize=pageSize;
       this.paginator.pageSizeOptions = this.getPageSizeOptions();
-      console.log(data);
+      // console.log(data);
 
 
       this.dataSource = new MatTableDataSource(data)
@@ -97,17 +97,17 @@ export class BasicTableComponent implements OnInit {
   }
 
   changePage(event:any){
-    console.log(event);
+    // console.log(event);
     if(event.pageIndex==this.currentPage)
     {
-      console.log("drop");
+      // console.log("drop");
       this.getAgencies(this.paginator.pageSize);
     }
     else if(this.currentPage<event.pageIndex){
-      console.log("next");
+      // console.log("next");
       this.currentPage = event.pageIndex;
       const nextUrl = this.response.links.next.href;
-      console.log(nextUrl);
+      // console.log(nextUrl);
 
       this.service.getNextAgencies(nextUrl)
       .pipe(
@@ -142,13 +142,13 @@ export class BasicTableComponent implements OnInit {
 
     }
     else{
-      console.log("prev");
+      // console.log("prev");
 
       this.currentPage = event.pageIndex;
-      console.log(this.response);
+      // console.log(this.response);
 
       const prevUrl = this.response.links.prev.href;
-      console.log(prevUrl);
+      // console.log(prevUrl);
 
       this.service.getNextAgencies(prevUrl)
       .pipe(
