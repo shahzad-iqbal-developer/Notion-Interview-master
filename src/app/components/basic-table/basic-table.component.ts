@@ -43,6 +43,7 @@ export class BasicTableComponent implements OnInit {
     .pipe(
       map(agencies=>{
           let mapper:AgencyTable[] = agencies.data.map((agency:Datum)=>{
+            this.response= agencies;
               let attributes:AgencyTable = {
                 id:agency.id,
                 title: this.concatTitleAbbreviation(agency.attributes),
@@ -56,22 +57,24 @@ export class BasicTableComponent implements OnInit {
           })
           return mapper;
       })
-     
+
     )
     .subscribe((data:AgencyTable[])=>{
       debugger;
       this.paginator.pageSize=pageSize;
       this.paginator.pageSizeOptions = this.getPageSizeOptions();
-      this.response= data;
+      console.log(data);
+
+
       this.dataSource = new MatTableDataSource(data)
 
       this.dataSource.paginator =this.paginator
     })
   }
   concatTitleAbbreviation(attributes: Attributes): string {
-    let title = attributes.title  
+    let title = attributes.title
     if(attributes.abbreviation){
-         title = title.concat(`(${attributes.abbreviation})`) 
+         title = title.concat(`(${attributes.abbreviation})`)
       }
       return title
   }
@@ -109,6 +112,7 @@ export class BasicTableComponent implements OnInit {
       this.service.getNextAgencies(nextUrl)
       .pipe(
         map(agencies=>{
+          this.response= agencies;
             let mapper:AgencyTable[] = agencies.data.map((agency:Datum)=>{
                 let attributes:AgencyTable = {
                   id:agency.id,
@@ -123,12 +127,12 @@ export class BasicTableComponent implements OnInit {
             })
             return mapper;
         })
-       
+
       )
       .subscribe(data=>{
 
 
-        this.response= data;
+
        this.dataSource = new MatTableDataSource(data)
 
 
@@ -141,12 +145,15 @@ export class BasicTableComponent implements OnInit {
       console.log("prev");
 
       this.currentPage = event.pageIndex;
+      console.log(this.response);
+
       const prevUrl = this.response.links.prev.href;
       console.log(prevUrl);
 
       this.service.getNextAgencies(prevUrl)
       .pipe(
         map(agencies=>{
+          this.response= agencies;
             let mapper:AgencyTable[] = agencies.data.map((agency:Datum)=>{
                 let attributes:AgencyTable = {
                   id:agency.id,
@@ -161,10 +168,10 @@ export class BasicTableComponent implements OnInit {
             })
             return mapper;
         })
-       
+
       )
       .subscribe(data=>{
-        this.response= data;
+
         this.dataSource = new MatTableDataSource(data)
       })
     }
@@ -172,7 +179,7 @@ export class BasicTableComponent implements OnInit {
 
   }
 
-  routeToDetail(element:any){    
+  routeToDetail(element:any){
     sessionStorage.setItem("detailURL",element.self.href);
     this.router.navigate([`/agency/${element.id}`])
   }
